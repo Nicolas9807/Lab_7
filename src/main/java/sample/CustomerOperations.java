@@ -12,9 +12,6 @@ public class CustomerOperations {
     private static void withdraw(Account account, double sum, double companyOverdraftDiscount) {
         double left = account.getMoney() - sum;
 
-        // we are in overdraft
-        // 50 percent discount for overdraft and premium account
-        // no discount for overdraft for not premium account
         account.setMoney(account.getMoney() < 0
                 ? left - sum * account.overdraftFee() * companyOverdraftDiscount
                 : left);
