@@ -36,26 +36,19 @@ public class Customer {
     }
 
     private void withdraw(double sum, double companyOverdraftDiscount) {
-        switch (customerType) {
-            case COMPANY:
-                // we are in overdraft
-                if (account.getMoney() < 0) {
-                    // 50 percent discount for overdraft for premium account
-                    // no discount for overdraft for not premium account
-                    account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee() * companyOverdraftDiscount);
-                } else {
-                    account.setMoney(account.getMoney() - sum);
-                }
-                break;
-            case PERSON:
-                // we are in overdraft
-                if (account.getMoney() < 0) {
-                    account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                } else {
-                    account.setMoney(account.getMoney() - sum);
-                }
-                break;
+
+        if (customerType == CustomerType.PERSON) {
+            companyOverdraftDiscount = 1;
         }
+
+        double left = account.getMoney() - sum;
+
+        // we are in overdraft
+        // 50 percent discount for overdraft for premium account
+        // no discount for overdraft and not premium account
+        account.setMoney(account.getMoney() < 0
+                ? left - sum * account.overdraftFee() * companyOverdraftDiscount
+                : left);
     }
 
     public String getName() {
