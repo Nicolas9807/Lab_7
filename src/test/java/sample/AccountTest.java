@@ -1,6 +1,6 @@
 package sample;
 /**
- * author Stolyar Mykola
+ * @author Stolyar Mykola
  */
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class AccountTest {
     @Test
     public void testPrintCustomer() {
         Account account = getNormalAccount();
-        Customer customer = new Customer("xxx", "xxx", "xxx@mail.com", CustomerType.PERSON, account);
+        Customer customer = new Customer("xxx", "xxx", "xxx@mail.com", account);
         account.setCustomer(customer);
         assertThat(account.printCustomer(), is("xxx xxx@mail.com"));
     }

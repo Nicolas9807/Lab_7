@@ -1,6 +1,6 @@
 package sample;
 /**
- * author Stolyar Mykola
+ * @author Stolyar Mykola
  */
 public enum CustomerType {
     COMPANY,

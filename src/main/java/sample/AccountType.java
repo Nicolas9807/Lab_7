@@ -1,7 +1,7 @@
 package sample;
 
 /**
- * author Stolyar Mykola
+ * @author Stolyar Mykola
  */
 public class AccountType {
     private boolean premium;
