@@ -2,40 +2,72 @@ package sample;
 /**
  * @author Stolyar Mykola
  */
-public class Customer extends AbstractCustomer {
+public abstract class Customer {
 
-    private String surname;
+    protected String name;
+    protected String surname;
+    protected String email;
+    protected Account account;
+    protected double companyOverdraftDiscount = 1;
 
     public Customer(String name, String surname, String email, Account account) {
-        super(name, email, account, CustomerType.PERSON);
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.account = account;
     }
 
-    @Override
-    public double getOverdraftDiscount() {
-        return 1;
+    // use only to create companies
+    public Customer(String name, String email, Account account, double companyOverdraftDiscount) {
+        this.name = name;
+        this.email = email;
+        this.account = account;
+        this.companyOverdraftDiscount = companyOverdraftDiscount;
+    }
+
+    protected abstract double calculateClientMoney(Account account, double sum);
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void withdraw(double sum, String currency) {
+        if (!account.getAccountState().getCurrency().equals(currency)) {
+            throw new RuntimeException("Can't extract withdraw " + currency);
+        }
+
+        account.getAccountState().setMoney(calculateClientMoney(account, sum));
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String printCustomerDaysOverdrawn() {
-        return getFullName() + getAccount().printDaysOverdrawnDescription();
-    }
+        String fullName = getFullName();
 
-    private String getFullName(){
-        return getName() + " " + surname + " ";
+        return account.printCustomerDaysOverdrawn(fullName);
     }
 
     public String printCustomerMoney() {
-        return getFullName() + getAccount().printMoneyDescription();
+        String fullName = getFullName();
+
+        return account.printCustomerMoney(fullName);
     }
 
     public String printCustomerAccount() {
-        return getAccount().printAccount();
+        return  account.printCustomerAccount();
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public String getFullName () {
+        return name + " " + surname + " ";
     }
 }

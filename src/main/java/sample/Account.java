@@ -5,14 +5,26 @@ package sample;
 public class Account {
 
     private String iban;
-    private int daysOverdrawn;
-    private AbstractCustomer customer;
-    private Money money;
-    private boolean premium;
 
-    public Account(boolean premium, int daysOverdrawn) {
+    private AccountType type;
+
+    private int daysOverdrawn;
+
+    private AccountState accountState;
+
+    private Customer customer;
+
+    public AccountState getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(AccountState accountState) {
+        this.accountState = accountState;
+    }
+
+    public Account(boolean isPremiumAccount, int daysOverdrawn) {
         super();
-        this.premium = premium;
+        this.type = new AccountType(isPremiumAccount);
         this.daysOverdrawn = daysOverdrawn;
     }
 
@@ -25,7 +37,7 @@ public class Account {
     }
 
     private double overdraftCharge() {
-        if (premium) {
+        if (type.isPremium()) {
             double result = 10;
             if (getDaysOverdrawn() > 7)
                 result += (getDaysOverdrawn() - 7) * 1.0;
@@ -35,29 +47,13 @@ public class Account {
     }
 
     public double overdraftFee() {
-        if (premium) {
+        if (type.isPremium()) {
             return 0.10;
         } else {
             return 0.20;
         }
     }
 
-    public String printAccount() {
-        return "Account: IBAN: " + getIban() + ", Money: "
-                + getMoney().getValue() + ", Account type: " + getType();
-    }
-
-    public String printDaysOverdrawnDescription() {
-        return "Account: IBAN: " + getIban() + ", Days Overdrawn: " + getDaysOverdrawn();
-    }
-
-    public String printMoneyDescription() {
-        return "Account: IBAN: " + getIban() + ", Money: " + getMoney().getValue();
-    }
-
-    public String getType() {
-        return premium ? "premium" : "normal";
-    }
 
     public int getDaysOverdrawn() {
         return daysOverdrawn;
@@ -71,31 +67,58 @@ public class Account {
         this.iban = iban;
     }
 
-    public Money getMoney() {
-        return money;
+    public void setMoney(double money) {
+        this.accountState.setMoney(money);
     }
 
-    public void setMoney(Money money) {
-        this.money = money;
+    public double getMoney() {
+        return this.accountState.getMoney();
     }
 
-    public AbstractCustomer getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(AbstractCustomer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    public boolean isPremium() {
-        return premium;
-    }
-
-    public void setPremium(boolean premium) {
-        this.premium = premium;
+    public AccountType getType() {
+        return type;
     }
 
     public String printCustomer() {
         return customer.getName() + " " + customer.getEmail();
+    }
+
+    public static class AccountType {
+        private boolean premium;
+
+        AccountType(boolean premium) {
+            this.premium = premium;
+        }
+
+        public boolean isPremium() {
+            return premium;
+        }
+
+        @Override
+        public String toString() {
+            return premium ? "premium" : "normal";
+        }
+    }
+
+    public String printCustomerDaysOverdrawn(String fullName) {
+        String accountDescription = "Account: IBAN: " + getIban() + ", Days Overdrawn: " + getDaysOverdrawn();
+        return fullName + accountDescription;
+    }
+
+    public String printCustomerMoney(String fullName) {
+        String accountDescription = "Account: IBAN: " + getIban() + ", Money: " + getMoney();
+        return fullName + accountDescription;
+    }
+
+    public String printCustomerAccount() {
+        return "Account: IBAN: " + getIban() + ", Money: " + getMoney() + ", Account type: " + getType();
     }
 }

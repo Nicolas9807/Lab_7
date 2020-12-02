@@ -1,26 +1,22 @@
 package sample;
-
 /**
  * @author Stolyar Mykola
  */
-public class CompanyCustomer extends AbstractCustomer {
-    private double companyOverdraftDiscount;
-
-    public CompanyCustomer(String name, String email, Account account, double companyOverdraftDiscount) {
-        super(name, email, account, CustomerType.COMPANY);
-        this.companyOverdraftDiscount = companyOverdraftDiscount;
+public class CompanyCustomer extends Customer{
+    public CompanyCustomer(String name, String email, Account account, double companyOverDraft) {
+        super(name, email, account, companyOverDraft);
     }
 
-    public double getCompanyOverdraftDiscount() {
-        return companyOverdraftDiscount;
-    }
+    protected double calculateClientMoney(Account account, double sum) {
+        double clientOverDraftDiscount = this.companyOverdraftDiscount;
+        if (account.getType().isPremium()) {
+            clientOverDraftDiscount /= 2;
+        }
 
-    public void setCompanyOverdraftDiscount(double companyOverdraftDiscount) {
-        this.companyOverdraftDiscount = companyOverdraftDiscount;
-    }
+        if (account.getMoney() < 0) {
+            return (account.getMoney() - sum) - sum * account.overdraftFee() * clientOverDraftDiscount;
+        }
 
-    @Override
-    public double getOverdraftDiscount() {
-        return companyOverdraftDiscount / (getAccount().isPremium() ? 2 : 1);
+        return account.getMoney() - sum;
     }
 }
