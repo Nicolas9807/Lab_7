@@ -21,6 +21,6 @@ public class CompanyCustomer extends AbstractCustomer {
 
     @Override
     public double getOverdraftDiscount() {
-        return companyOverdraftDiscount / (getAccount().getType().isPremium() ? 2 : 1);
+        return companyOverdraftDiscount / (getAccount().isPremium() ? 2 : 1);
     }
 }
