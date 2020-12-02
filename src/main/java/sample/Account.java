@@ -43,6 +43,18 @@ public class Account {
         }
     }
 
+    public String printAccount() {
+        return "Account: IBAN: " + getIban() + ", Money: "
+                + getMoney() + ", Account type: " + getType();
+    }
+
+    public String printDaysOverdrawnDescription() {
+        return "Account: IBAN: " + getIban() + ", Days Overdrawn: " + getDaysOverdrawn();
+    }
+
+    public String printMoneyDescription() {
+        return "Account: IBAN: " + getIban() + ", Money: " + getMoney();
+    }
 
     public int getDaysOverdrawn() {
         return daysOverdrawn;

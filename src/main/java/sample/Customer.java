@@ -16,9 +16,7 @@ public class Customer extends AbstractCustomer {
     }
 
     public String printCustomerDaysOverdrawn() {
-        String fullName = getFullName();
-        String accountDescription = "Account: IBAN: " + getAccount().getIban() + ", Days Overdrawn: " + getAccount().getDaysOverdrawn();
-        return fullName + accountDescription;
+        return getFullName() + getAccount().printDaysOverdrawnDescription();
     }
 
     private String getFullName(){
@@ -26,15 +24,11 @@ public class Customer extends AbstractCustomer {
     }
 
     public String printCustomerMoney() {
-        String fullName = getFullName();
-        String accountDescription = "";
-        accountDescription += "Account: IBAN: " + getAccount().getIban() + ", Money: " + getAccount().getMoney();
-        return fullName + accountDescription;
+        return getFullName() + getAccount().printMoneyDescription();
     }
 
     public String printCustomerAccount() {
-        return "Account: IBAN: " + getAccount().getIban() + ", Money: "
-                + getAccount().getMoney() + ", Account type: " + getAccount().getType();
+        return getAccount().printAccount();
     }
 
     public String getSurname() {
